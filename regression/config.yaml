@@ -1,0 +1,6 @@
+training_data: 'data/dummy.csv'
+features:
+  - x1
+  - x2
+target:
+  - y
