@@ -1,9 +1,12 @@
 from util.util import alias_features
+import pandas as pd
 
 class TestUtil(object):
 
     def test_alias_features(self):
-        assert alias_features(['a', 'b', 'c'], 'target') == ({'a':'x0', 'b':'x1', 'c': 'x2'}, {'target': 'y'})
+        df = pd.DataFrame([[1,2,3,4,5], [4,5,6,7,8]], columns=['a','b','c','d','z'])
+        df, alias = alias_features(df, features=['a','b','c'], target='z')
+        assert list(df.columns) == ['x0','x1','x2','d','y']
 
 class TestClassification(object):
 

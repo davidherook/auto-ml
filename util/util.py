@@ -1,15 +1,20 @@
+import pandas as pd
 
-
-
-def alias_features(features, target):
-    '''Standardize the features names by mapping the features in config.yaml with the names
-    x1, x2, x3 ... xn and the target as y
+def alias_features(df, features, target):
+    """Standardize the column names to be used in tableau for different datasets
     
-    arguments:
-        features: list
-        target: string'''
-    feats = {}
+    Args:
+        df (pd.DataFrame): The dataframe for which column names are aliased
+        features (list): Features used in the model 
+        target (string): Target variable for prediction 
+
+    Returns:
+        df (pd.DataFrame): The dataframe with aliased columns
+        aliases(dict): The mapping of variable name to alias
+    """
+    aliases = {}
     for i, j in enumerate(features):
-        feats.update({j:f'x{i}'})
-    targ = {target: 'y'}
-    return feats, targ
+        aliases.update({j:f'x{i}'})
+    aliases.update({target:'y'})
+    df.rename(columns=aliases, inplace=True)
+    return df, aliases

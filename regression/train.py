@@ -1,14 +1,10 @@
 ########################################################################################
 #   Try several models for a regression problem
 #
-#
-#
-#
-#
-#   From the regression dir:
-#       python train.py -c config.yaml
+#   python regression/train.py -c regression/config.yaml
 ########################################################################################
 
+import json
 import yaml
 import argparse
 import pandas as pd
@@ -16,6 +12,11 @@ from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, SGDRegressor
+
+import sys 
+sys.path.append('../ootb-ml/')
+
+from util.util import alias_features
 
 models = [
     ('linear_regression', LinearRegression()),
@@ -47,24 +48,31 @@ if __name__ == '__main__':
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=7)
     print('Training on {}, Testing on {}'.format(X_train.shape[0], X_test.shape[0]))
 
-    print(X_train.index)
-    print(X_test.index)
-
     # Predict with all models 
     X_test_copy = X_test.copy()
     for name, model in models:
         print(f'\nRunning {name}...')
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
-        # all_pred.append((name, y_pred))
         X_test_copy.loc[:, f'y_pred_{name}'] = model.predict(X_test)
-        # X_test.loc[:, 'model'] = name
     
-    # y_pred_cols = [f'y_pred_{name}' for name, model in models]
+    # Write results to output
     df_results = pd.merge(df, X_test_copy.drop(features, axis=1), how='left', left_index=True, right_index=True)
+    df_results.to_csv('regression/output/results.csv', index=False)
 
-    print(X_test_copy)
-    print(df_results)
+    # Alias columns and write results to tableau folder
+    df_results_aliased, alias_map = alias_features(df_results, features=features, target=target[0])
+    df_results_aliased.to_csv('regression/tableau/results.csv', index=False)
+
+    alias_json = json.dumps(alias_map)
+    with open('regression/tableau/column_alias_names.json',"w") as f:
+        f.write(alias_json)
+
+    print('Results written to ...')
+
+ 
+
+    
 
     
 
