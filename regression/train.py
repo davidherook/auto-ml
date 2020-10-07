@@ -3,7 +3,7 @@
 #
 #   python regression/train.py -c regression/config.yaml
 ########################################################################################
-
+import os
 import json
 import yaml
 import argparse
@@ -39,6 +39,15 @@ if __name__ == '__main__':
         data = config['training_data']
         features = config['features']
         target = config['target']
+        project = config['project_name']
+
+        output_dir = f'regression/output/{run_time}'
+        os.mkdir(output_dir)
+
+        output_predictions_path = f'{output_dir}/results.csv'
+        tableau_predictions_path = 'regression/tableau/results.csv'
+        tableau_alias_map_path = 'regression/tableau/column_alias_names.json'
+        output_config_path = f'{output_dir}/training_configuration.json'
 
     # Read data
     df = pd.read_csv(data)
@@ -52,23 +61,28 @@ if __name__ == '__main__':
     X_test_copy = X_test.copy()
     for name, model in models:
         print(f'\nRunning {name}...')
-        model.fit(X_train, y_train)
+        model.fit(X_train, y_train.values.ravel())
         y_pred = model.predict(X_test)
         X_test_copy.loc[:, f'y_pred_{name}'] = model.predict(X_test)
     
     # Write results to output
     df_results = pd.merge(df, X_test_copy.drop(features, axis=1), how='left', left_index=True, right_index=True)
-    df_results.to_csv('regression/output/results.csv', index=False)
+    df_results.to_csv(output_predictions_path, index=False)
+
+    # Write config to output
+    with open(output_config_path, 'w') as f:
+        f.write(json.dumps(config))
 
     # Alias columns and write results to tableau folder
     df_results_aliased, alias_map = alias_features(df_results, features=features, target=target[0])
-    df_results_aliased.to_csv('regression/tableau/results.csv', index=False)
+    df_results_aliased.to_csv(tableau_predictions_path, index=False)
 
     alias_json = json.dumps(alias_map)
-    with open('regression/tableau/column_alias_names.json',"w") as f:
+    with open(tableau_alias_map_path, "w") as f:
         f.write(alias_json)
 
-    print('Results written to ...')
+    print(f'Results written to {output_predictions_path}')
+    print(df_results)
 
  
 
