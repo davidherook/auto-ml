@@ -18,3 +18,20 @@ def alias_features(df, features, target):
     aliases.update({target:'y'})
     df.rename(columns=aliases, inplace=True)
     return df, aliases
+
+def check_features_exist(df, features):
+    """Confirm that list of features is in df.columns
+    
+    Args:
+        df (pd.DataFrame): The dataframe for which column names are aliased
+        features (list): Features used in the model 
+
+    Returns:
+        features_ok(bool): Whether all features are present
+    """
+    features_ok = set(features).issubset(df.columns)
+    if not features_ok:
+        raise ValueError('Features provided in the config were not found in the dataset. The dataset features are:\n {}'.format(list(df.columns)))
+    return True
+
+

@@ -28,4 +28,5 @@ python regression/train.py -c regression/config.yaml
 #### TODO
 
 - create tableau validation notebook
+- get working on real data set
 - include neural net

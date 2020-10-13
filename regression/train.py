@@ -16,7 +16,7 @@ from sklearn.linear_model import LinearRegression, SGDRegressor
 import sys 
 sys.path.append('../ootb-ml/')
 
-from util.util import alias_features
+from util.util import alias_features, check_features_exist
 
 models = [
     ('linear_regression', LinearRegression()),
@@ -42,7 +42,6 @@ if __name__ == '__main__':
         project = config['project_name']
 
         output_dir = f'regression/output/{run_time}'
-        os.mkdir(output_dir)
 
         output_predictions_path = f'{output_dir}/results.csv'
         tableau_predictions_path = 'regression/tableau/results.csv'
@@ -51,6 +50,7 @@ if __name__ == '__main__':
 
     # Read data
     df = pd.read_csv(data)
+    check_features_exist(df, features)
 
     # Train / Test split
     X, y = df[features], df[target]
@@ -66,6 +66,7 @@ if __name__ == '__main__':
         X_test_copy.loc[:, f'y_pred_{name}'] = model.predict(X_test)
     
     # Write results to output
+    os.mkdir(output_dir)
     df_results = pd.merge(df, X_test_copy.drop(features, axis=1), how='left', left_index=True, right_index=True)
     df_results.to_csv(output_predictions_path, index=False)
 

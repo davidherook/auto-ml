@@ -1,17 +1,25 @@
 ########################################################################################
 #
-#
-#
-#
-#
+#  Before training, configure setting for your dataset here
 #
 ########################################################################################
 
 
-project_name: 'dummy_project'
-training_data: 'regression/data/dummy.csv'
+project_name: 'boston_housing'
+training_data: 'regression/data/boston_housing.csv'
 features:
-  - x1
-  - x2
+  - CRIM
+  - ZN
+  - INDUS
+  - CHAS
+  - NOX
+  - RM
+  - AGE
+  - DIS
+  - RAD
+  - TAX
+  - PTRATIO
+  - B
+  - LSTAT
 target:
-  - y
+  - mdev
