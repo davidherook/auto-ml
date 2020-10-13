@@ -1,8 +1,11 @@
 ########################################################################################
-#   Try several models for a regression problem
+#   Try several models for a regression problem:
+#       python regression/train.py -c regression/config.yaml
 #
-#   python regression/train.py -c regression/config.yaml
+#   To save a model to deploy later, use save_models:
+#       python regression/train.py -c regression/config.yaml --save_models
 ########################################################################################
+
 import os
 import json
 import yaml
@@ -16,7 +19,7 @@ from sklearn.linear_model import LinearRegression, SGDRegressor
 import sys 
 sys.path.append('../ootb-ml/')
 
-from util.util import alias_features, check_features_exist
+from util.util import alias_features, check_features_exist, save_model
 
 models = [
     ('linear_regression', LinearRegression()),
@@ -31,8 +34,10 @@ if __name__ == '__main__':
     # Parse command line arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', type=str, help='Training configuration')
+    parser.add_argument('-s', '--save_models', action='store_true', help='Persist model(s) for deployment?')
     args = vars(parser.parse_args())
     config_path = args['config']
+    save_models = args['save_models']
 
     with open(config_path) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
@@ -41,6 +46,7 @@ if __name__ == '__main__':
         target = config['target']
         project = config['project_name']
 
+        model_dir = 'regression/model/'
         output_dir = f'regression/output/{run_time}'
 
         output_predictions_path = f'{output_dir}/results.csv'
@@ -55,15 +61,19 @@ if __name__ == '__main__':
     # Train / Test split
     X, y = df[features], df[target]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=7)
-    print('Training on {}, Testing on {}'.format(X_train.shape[0], X_test.shape[0]))
+    print('\n\nTraining on {}, Testing on {}'.format(X_train.shape[0], X_test.shape[0]))
 
     # Predict with all models 
     X_test_copy = X_test.copy()
     for name, model in models:
-        print(f'\nRunning {name}...')
+        print(f'Running {name}...')
         model.fit(X_train, y_train.values.ravel())
         y_pred = model.predict(X_test)
         X_test_copy.loc[:, f'y_pred_{name}'] = model.predict(X_test)
+        if save_models:
+            # Persist model(s) for deployment
+            save_model(model, f'{model_dir}{name}.pk')
+            print(f'Model has been saved as {model_dir}{name}.pk')
     
     # Write results to output
     os.mkdir(output_dir)

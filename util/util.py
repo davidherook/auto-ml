@@ -1,4 +1,5 @@
 import pandas as pd
+import pickle
 
 def alias_features(df, features, target):
     """Standardize the column names to be used in tableau for different datasets
@@ -33,5 +34,11 @@ def check_features_exist(df, features):
     if not features_ok:
         raise ValueError('Features provided in the config were not found in the dataset. The dataset features are:\n {}'.format(list(df.columns)))
     return True
+
+def save_model(model, filename):
+    pickle.dump(model, open(filename, 'wb'))
+
+def load_model(filename):
+    return pickle.load(open(filename, 'rb'))
 
 
