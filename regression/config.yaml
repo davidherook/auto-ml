@@ -5,8 +5,8 @@
 ########################################################################################
 
 
-project_name: 'boston_housing'
-training_data: 'regression/data/boston_housing.csv'
+project_name: boston_housing
+training_data: regression/data/boston_housing.csv
 features:
   - CRIM
   - ZN
@@ -21,5 +21,4 @@ features:
   - PTRATIO
   - B
   - LSTAT
-target:
-  - mdev
+target: mdev

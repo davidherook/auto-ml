@@ -20,6 +20,7 @@ import sys
 sys.path.append('../ootb-ml/')
 
 from util.util import alias_features, check_features_exist, save_model
+from validate import validation_summary
 
 models = [
     ('linear_regression', LinearRegression()),
@@ -67,33 +68,36 @@ if __name__ == '__main__':
     X_test_copy = X_test.copy()
     for name, model in models:
         print(f'Running {name}...')
-        model.fit(X_train, y_train.values.ravel())
+        model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
-        X_test_copy.loc[:, f'y_pred_{name}'] = model.predict(X_test)
+        X_test_copy.loc[:, f'y_pred_{name}'] = y_pred
         if save_models:
             # Persist model(s) for deployment
             save_model(model, f'{model_dir}{name}.pk')
             print(f'Model has been saved as {model_dir}{name}.pk')
+
+        # Print validation metrics
+        metrics = validation_summary(y_test, y_pred, print_results=True, description='Full Test Set')
     
     # Write results to output
     os.mkdir(output_dir)
     df_results = pd.merge(df, X_test_copy.drop(features, axis=1), how='left', left_index=True, right_index=True)
     df_results.to_csv(output_predictions_path, index=False)
+    print(f'Results written to {output_predictions_path}')
 
-    # Write config to output
     with open(output_config_path, 'w') as f:
         f.write(json.dumps(config))
 
     # Alias columns and write results to tableau folder
     df_results_aliased, alias_map = alias_features(df_results, features=features, target=target[0])
     df_results_aliased.to_csv(tableau_predictions_path, index=False)
+    print(f'Results written to {tableau_predictions_path}')
 
     alias_json = json.dumps(alias_map)
     with open(tableau_alias_map_path, "w") as f:
         f.write(alias_json)
 
-    print(f'Results written to {output_predictions_path}')
-    print(df_results)
+    
 
  
 

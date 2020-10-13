@@ -22,11 +22,9 @@ The following files are written after training:
 ## Train a model 
 
 ```
+# Train
 python regression/train.py -c regression/config.yaml
+
+# Train and Persist Models
+python regression/train.py -c regression/config.yaml --save_models
 ```
-
-#### TODO
-
-- create tableau validation notebook
-- get working on real data set
-- include neural net
