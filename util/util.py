@@ -1,5 +1,6 @@
 import pandas as pd
 import pickle
+import matplotlib.pyplot as plt
 
 def alias_features(df, features, target):
     """Standardize the column names to be used in tableau for different datasets
@@ -40,5 +41,15 @@ def save_model(model, filename):
 
 def load_model(filename):
     return pickle.load(open(filename, 'rb'))
+
+def plot_pred_vs_actual(y_true, y_pred, title="Actual vs. Predicted", save_to=None):
+    plt.scatter(y_true, y_pred)
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+    plt.title(title)
+    if save_to is not None:
+        plt.savefig(save_to)
+    plt.clf()
+
 
 
