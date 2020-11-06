@@ -18,19 +18,30 @@ The following files are written after training:
 3. tableau/column_alias_names.json
 4. model/....
 
+## Choose Problem Type
+If regression problem:
+```
+cd regression
+```
+
+If classification:
+```
+cd classification
+```
+
 ## Train a model 
 
 ```
 # Train
-python regression/train.py -c sample_configs/boston_housing.yaml
+python train.py -c config.yaml
 
 # Train and Persist Models
-python regression/train.py -c sample_configs/boston_housing.yaml --save_models --save_output
+python train.py -c config.yaml --save_output --save_model
 ```
 
 ## Predict in Batch
 ```
-python regression/predict.py -c sample_configs/boston_housing.yaml -d regression/data/boston_housing.csv -m regression/model/rf_regression.pk
+python predict.py -c config.yaml -d data/boston_housing.csv -m model/rf_regression.pk
 ```
 
 

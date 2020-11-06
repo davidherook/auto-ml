@@ -1,24 +1,24 @@
-########################################################################################
-#
-#  Before training, configure setting for your dataset here
-#
-########################################################################################
+# ########################################################################################
+# #
+# #  Before training, configure setting for your dataset here
+# #
+# ########################################################################################
 
 
-project_name: boston_housing
-training_data: regression/data/boston_housing.csv
-features:
-  - CRIM
-  - ZN
-  - INDUS
-  - CHAS
-  - NOX
-  - RM
-  - AGE
-  - DIS
-  - RAD
-  - TAX
-  - PTRATIO
-  - B
-  - LSTAT
-target: mdev
+# project_name: boston_housing
+# training_data: regression/data/boston_housing.csv
+# features:
+#   - CRIM
+#   - ZN
+#   - INDUS
+#   - CHAS
+#   - NOX
+#   - RM
+#   - AGE
+#   - DIS
+#   - RAD
+#   - TAX
+#   - PTRATIO
+#   - B
+#   - LSTAT
+# target: mdev
