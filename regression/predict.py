@@ -1,6 +1,6 @@
 ########################################################################################
 #   Predict new instances
-#       python regression/predict.py -c sample_configs/boston_housing.yaml -d regression/data/boston_housing.csv -m regression/model/rf_regression.pk
+#       python predict.py -c config.yaml -d data/boston_housing.csv -m model/rf_regression.pk
 ########################################################################################
 
 import yaml
@@ -8,14 +8,14 @@ import argparse
 import pandas as pd
 
 import sys 
-sys.path.append('../ootb-ml/')
+sys.path.append('../')
 
 from util.util import check_features_exist, load_model
     
        
 if __name__ == '__main__':
 
-    output_predictions_path = f'regression/data/predictions.csv'
+    output_predictions_path = f'data/predictions.csv'
     
     # Parse command line arguments
     parser = argparse.ArgumentParser()

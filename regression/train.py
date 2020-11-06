@@ -1,9 +1,9 @@
 ########################################################################################
 #   Try several models for a regression problem:
-#       python regression/train.py -c sample_configs/boston_housing.yaml --save_output
+#       python train.py -c config.yaml
 #
 #   To save a model to deploy later, use save_models:
-#       python regression/train.py -c sample_configs/boston_housing.yaml --save_models --save_output
+#       python train.py -c config.yaml --save_output --save_model
 ########################################################################################
 
 import os
@@ -17,8 +17,10 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, SGDRegressor
 
 import sys 
-sys.path.append('../ootb-ml/')
+sys.path.append(os.path.abspath('..'))
+print(sys.path)
 
+# from util.util import alias_features, check_features_exist, save_model, plot_pred_vs_actual
 from util.util import alias_features, check_features_exist, save_model, plot_pred_vs_actual
 from validate import validation_summary
 
@@ -49,8 +51,8 @@ if __name__ == '__main__':
         target = config['target']
         project = config['project_name']
 
-        model_dir = 'regression/model/'
-        output_dir = f'regression/output/{run_time}/'
+        model_dir = 'model/'
+        output_dir = f'output/{run_time}/'
         if save_output:
             os.mkdir(output_dir)
 
