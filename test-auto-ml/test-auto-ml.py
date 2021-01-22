@@ -19,12 +19,5 @@ class TestUtil(object):
         with pytest.raises(ValueError):
             check_features_exist(df, feats2)
 
-class TestClassification(object):
 
-    def test_classification(self):
-        assert 1 == 1
 
-class TestRegression(object):
-
-    def test_regression(self):
-        assert 1 == 1
