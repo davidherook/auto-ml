@@ -1,1 +1,0 @@
-{"CRIM": "x0", "ZN": "x1", "INDUS": "x2", "CHAS": "x3", "NOX": "x4", "RM": "x5", "AGE": "x6", "DIS": "x7", "RAD": "x8", "TAX": "x9", "PTRATIO": "x10", "B": "x11", "LSTAT": "x12", "m": "y"}
