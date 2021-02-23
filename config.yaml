@@ -4,12 +4,12 @@ features:
   - INDUS
   - CHAS
   - NOX
-  - RM
-  - AGE
-  - DIS
-  - RAD
-  - TAX
-  - PTRATIO
-  - B
-  - LSTAT
+  # - RM
+  # - AGE
+  # - DIS
+  # - RAD
+  # - TAX
+  # - PTRATIO
+  # - B
+  # - LSTAT
 target: mdev

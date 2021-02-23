@@ -1,6 +1,6 @@
 import os
 import yaml
-from auto_ml.util import generate_hash, load_pickle, save_pickle
+from auto_ml.util import generate_hash, load_pickle, save_pickle, save_yaml, load_yaml
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from shutil import copyfile
@@ -12,19 +12,17 @@ class AutoML(object):
 
     def __init__(self, model=None, config=None):
 
-        self.model_hash = generate_hash()
-
         if model is not None:
-            model_path = os.path.join(MODEL_DIR, '{}.pk'.format(model))
+            model_path = os.path.join(MODEL_DIR, model, '{}.pk'.format(model))
             self.model = load_pickle(model_path) 
 
-            config_path = os.path.join(MODEL_DIR, 'config.yaml')
-            with open(config_path) as f:
-                self.config = yaml.load(f, Loader=yaml.FullLoader)
+            config_path = os.path.join(MODEL_DIR, model, 'config.yaml')
+            self.config = load_yaml(config_path)
             self.features = self.config['features']
             self.target = self.config['target']
 
         if config is not None:
+            self.model_hash = generate_hash()
             self.config = config
             self.features = self.config['features']
             self.target = self.config['target']
@@ -37,15 +35,12 @@ class AutoML(object):
     def model(self):
         return RandomForestRegressor()
 
-    def save(self, model):
-        filename = os.path.join(MODEL_DIR, '{}.pk'.format(self.model_hash))
-        save_pickle(model, filename)
-        print(f'Saved model to {filename}')
-
-    def save_yaml(self, conf):
-        filename = os.path.join(MODEL_DIR, 'config.yaml')
-        with open(filename, 'w') as f:
-            documents = yaml.dump(conf, f)
+    def save_model_artifacts(self, model, config, model_dir):
+        model_path = os.path.join(model_dir, '{}.pk'.format(self.model_hash))
+        config_path = os.path.join(model_dir, 'config.yaml')
+        save_pickle(model, model_path)
+        save_yaml(config, config_path)
+        print(f'Saved model artifacts')
 
     def train(self, data):
         X, y = data[self.features], data[self.target]
@@ -60,8 +55,9 @@ class AutoML(object):
         X_test['y_pred'] = y_pred
 
         # Persist model and config in model dir 
-        self.save(model)
-        self.save_yaml(self.config)
+        model_dir = os.path.join(MODEL_DIR, self.model_hash)
+        os.mkdir(model_dir)
+        self.save_model_artifacts(model, self.config, model_dir)
 
         # Write results to output dir
         output_dir = os.path.join(OUTPUT_DIR, self.model_hash)
