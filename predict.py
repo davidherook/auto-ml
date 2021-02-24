@@ -6,14 +6,16 @@
 # python predict.py --model 1613958519 --data data/test_data.csv
 ########################################################################
 
+import os
 import yaml
 import argparse
 import pandas as pd
 from auto_ml.auto_ml import AutoML
-    
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'    
   
 if __name__ == '__main__':
     
+    print('\n\n'+'*'*40)
     parser = argparse.ArgumentParser()
     parser.add_argument('-m', '--model', type=str, help='Model hash to use to predict')
     parser.add_argument('-d', '--data', type=str, help='Path to the file with test data to predict')
@@ -30,4 +32,4 @@ if __name__ == '__main__':
 
     X_test.to_csv(write_to)
     print(f'Predictions written to {write_to}')
-
+    print('*'*40+'\n\n')

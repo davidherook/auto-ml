@@ -1,15 +1,38 @@
+###################################
+# Dataset Configuration
+###################################
 features:
   - CRIM
   - ZN
   - INDUS
   - CHAS
   - NOX
-  # - RM
-  # - AGE
-  # - DIS
-  # - RAD
-  # - TAX
-  # - PTRATIO
-  # - B
-  # - LSTAT
+  - RM
+  - AGE
+  - DIS
+  - RAD
+  - TAX
+  - PTRATIO
+  - B
+  - LSTAT
 target: mdev
+
+###################################
+# Neural Network Architecture 
+###################################
+architecture:
+- activation: relu
+  nodes: 2
+# - activation: relu
+#   nodes: 2
+# - activation: relu
+#   nodes: 4
+- activation: relu
+  nodes: 1
+
+optimizer:
+  loss: 'mse'
+
+training:
+  epochs: 200
+  batch_size: 16

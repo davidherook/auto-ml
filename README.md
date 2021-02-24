@@ -29,8 +29,8 @@ python predict.py --model 1614042394 --data data/test_data.csv
 
 TODO:
 - Replace load and save functions with Artifacts class
-- Replace Random Forest for Neural Net
-- Include plots in output
+- Easily switch between scikit and keras models
+- Include residual plot in output
 - Test regression problem with new datasets 
 - Create AutoML for classification problems
 

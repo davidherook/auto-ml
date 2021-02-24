@@ -1,7 +1,0 @@
-features:
-- CRIM
-- ZN
-- INDUS
-- CHAS
-- NOX
-target: mdev
