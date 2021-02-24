@@ -24,6 +24,7 @@ if __name__ == '__main__':
 
     automl = AutoML(config=config)
     automl.train(data=df)
+    automl.evaluate()
 
     # Train / Test split
     # X, y = df[features], df[target]

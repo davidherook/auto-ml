@@ -1,6 +1,6 @@
 # Auto-ML
 
-A quick way to train a baseline model.
+A quick way to train a baseline model. All you need to do is add a dataset to the data folder and choose which features to use in the config file. The model is persisted in the model folder and the training performance is reported in the output folder.
 
 ## Getting Started
 
@@ -28,9 +28,10 @@ python predict.py --model 1614042394 --data data/test_data.csv
 
 
 TODO:
-- Fix settingwithcopywarning in auto_ml line 35, 36
-- Replace load and save functions for Artifacts
+- Replace load and save functions with Artifacts class
 - Replace Random Forest for Neural Net
-- Write model performance analyzer
+- Include plots in output
+- Test regression problem with new datasets 
+- Create AutoML for classification problems
 
 
