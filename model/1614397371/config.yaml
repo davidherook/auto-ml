@@ -13,6 +13,14 @@ features:
 - B
 - LSTAT
 target: mdev
+active_model: neural_net
+regression:
+  linear_regression:
+    fit_intercept: true
+    normalize: false
+  random_forest_regression:
+    n_estimators: 100
+classification: random_forest neural_net
 architecture:
 - activation: relu
   nodes: 2
@@ -21,5 +29,5 @@ architecture:
 optimizer:
   loss: mse
 training:
-  epochs: 200
+  epochs: 50
   batch_size: 16

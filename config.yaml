@@ -18,15 +18,34 @@ features:
 target: mdev
 
 ###################################
+# Which models to use for training
+###################################
+active_model: neural_net
+
+regression:
+
+  linear_regression:
+    fit_intercept: True 
+    normalize: False
+
+  random_forest_regression:
+    n_estimators: 100
+
+classification:
+  random_forest
+  neural_net
+
+
+###################################
 # Neural Network Architecture 
 ###################################
 architecture:
 - activation: relu
+  nodes: 4
+- activation: relu
   nodes: 2
-# - activation: relu
-#   nodes: 2
-# - activation: relu
-#   nodes: 4
+- activation: relu
+  nodes: 2
 - activation: relu
   nodes: 1
 
@@ -34,5 +53,5 @@ optimizer:
   loss: 'mse'
 
 training:
-  epochs: 200
-  batch_size: 16
+  epochs: 50
+  batch_size: 128

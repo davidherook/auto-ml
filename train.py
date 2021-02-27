@@ -2,7 +2,6 @@
 # python train.py -c config.yaml -d data/boston_housing.csv
 ########################################################################################
 
-import yaml
 import argparse
 import pandas as pd
 from auto_ml.auto_ml import AutoML

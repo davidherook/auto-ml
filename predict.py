@@ -3,11 +3,10 @@
 # Data set must be in csv format 
 # Writes the data set with predictions the same directory as --data
 #
-# python predict.py --model 1613958519 --data data/test_data.csv
+# python predict.py --model 1614396023 --data data/test_data.csv
 ########################################################################
 
 import os
-import yaml
 import argparse
 import pandas as pd
 from auto_ml.auto_ml import AutoML
