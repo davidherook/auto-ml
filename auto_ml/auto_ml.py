@@ -91,7 +91,7 @@ class AutoML(object):
             self.y_train,
             epochs=self.training['epochs'],
             batch_size=self.training['batch_size'],
-            validation_split=0.2,
+            validation_split=self.training['validation_split'],
             verbose=True)
 
     def train_scikit(self):

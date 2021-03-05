@@ -3,7 +3,7 @@
 # Data set must be in csv format 
 # Writes the data set with predictions the same directory as --data
 #
-# python predict.py --model 1614750182 --data data/test_data.csv
+# python predict.py --model 1614976220 --data data/test_data.csv
 ########################################################################
 
 import os

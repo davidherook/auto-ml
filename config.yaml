@@ -2,22 +2,40 @@
 # Dataset Configuration
 ###################################
 features:
-  - CRIM
-  - ZN
-  - INDUS
-  - CHAS
-  - NOX
-  - RM
-  - AGE
-  - DIS
-  - RAD
-  - TAX
-  - PTRATIO
-  - B
-  - LSTAT
-target: mdev
+- feat_0
+- feat_1
+target: target
 
-problem_type: classification 
+
+# features:
+#   - CRIM
+#   - ZN
+#   - INDUS
+#   - CHAS
+#   - NOX
+#   - RM
+#   - AGE
+#   - DIS
+#   - RAD
+#   - TAX
+#   - PTRATIO
+#   - B
+#   - LSTAT
+# target: mdev
+
+# features:
+# - '4046'
+# - '4225'
+# - '4770'
+# - Total Volume
+# - Total Bags
+# - Small Bags
+# - Large Bags
+# - XLarge Bags
+# target: AveragePrice
+
+problem_type: classification
+
 ###################################
 # REGRESSION model selection  
 ###################################
@@ -33,10 +51,6 @@ problem_type: classification
 # neural_net:
 #   architecture:
 #   - activation: relu
-#     nodes: 4
-#   - activation: relu
-#     nodes: 2
-#   - activation: relu
 #     nodes: 2
 #   - activation: relu
 #     nodes: 1
@@ -49,8 +63,9 @@ problem_type: classification
 #     - mae
 
 #   training:
-#     epochs: 50
+#     epochs: 150
 #     batch_size: 128
+#     validation_split: 0.2
 
 ###################################
 # CLASSIFICATION model selection 
@@ -83,5 +98,6 @@ neural_net:
     - accuracy
 
   training:
-    epochs: 50
+    epochs: 150
     batch_size: 128
+    validation_split: 0.2
