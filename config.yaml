@@ -17,41 +17,71 @@ features:
   - LSTAT
 target: mdev
 
+problem_type: classification 
 ###################################
-# Which models to use for training
+# REGRESSION model selection  
 ###################################
-active_model: neural_net
 
-regression:
+# linear_regression:
+#   fit_intercept: True 
+#   normalize: False
 
-  linear_regression:
-    fit_intercept: True 
-    normalize: False
+# random_forest_regression:
+#   n_estimators: 101
+#   random_state: 7
 
-  random_forest_regression:
-    n_estimators: 100
+# neural_net:
+#   architecture:
+#   - activation: relu
+#     nodes: 4
+#   - activation: relu
+#     nodes: 2
+#   - activation: relu
+#     nodes: 2
+#   - activation: relu
+#     nodes: 1
 
-classification:
-  random_forest
-  neural_net
+#   optimizer:
+#     loss: mse
+#     learning_rate: 0.01
+#     metrics:
+#     - mse
+#     - mae
 
+#   training:
+#     epochs: 50
+#     batch_size: 128
 
 ###################################
-# Neural Network Architecture 
+# CLASSIFICATION model selection 
 ###################################
-architecture:
-- activation: relu
-  nodes: 4
-- activation: relu
-  nodes: 2
-- activation: relu
-  nodes: 2
-- activation: relu
-  nodes: 1
 
-optimizer:
-  loss: 'mse'
+# logistic_regression:
+#   class_weight: None
+#   random_state: 7
 
-training:
-  epochs: 50
-  batch_size: 128
+# random_forest_classifier:
+#   n_estimators: 100
+#   class_weight: balanced
+#   random_state: 7
+
+neural_net:
+  architecture:
+  - activation: relu
+    nodes: 4
+  - activation: relu
+    nodes: 2
+  - activation: relu
+    nodes: 2
+  - activation: sigmoid
+    nodes: 1
+
+  optimizer:
+    loss: binary_crossentropy
+    learning_rate: 0.01
+    metrics: 
+    - accuracy
+
+  training:
+    epochs: 50
+    batch_size: 128

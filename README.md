@@ -28,8 +28,8 @@ python predict.py --model 1614042394 --data data/test_data.csv
 
 
 TODO:
-- Include residual plot in output
-- Test regression problem with new datasets 
-- Create AutoML for classification problems
+- Include Preprocessing
+- Test with new datasets 
+- Predict probs for classes
 
 

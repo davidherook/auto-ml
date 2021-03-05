@@ -1,10 +1,14 @@
 ########################################################################################
+# Example, regression:
 # python train.py -c config.yaml -d data/boston_housing.csv
+#
+# Example, classification:
+# python train.py -c config.yaml -d data/boston_housing_clf.csv
 ########################################################################################
 
 import argparse
 import pandas as pd
-from auto_ml.auto_ml import AutoML
+from auto_ml.auto_ml import AutoMLRegressor, AutoMLClassifier
 from auto_ml.util import load_yaml
 
 if __name__ == '__main__':
@@ -20,7 +24,11 @@ if __name__ == '__main__':
     config = load_yaml(config_path)
     df = pd.read_csv(data)
 
-    automl = AutoML(config=config)
+    if config['problem_type'] == 'regression':
+        automl = AutoMLRegressor(config=config)
+    elif config['problem_type'] == 'classification':
+        automl = AutoMLClassifier(config=config)
+
     automl.train(data=df)
     automl.evaluate()
     print('*'*40+'\n\n')

@@ -16,9 +16,19 @@ def plot_nn_history(history, show=True, save_to=None):
         plt.show()
 
 def plot_pred_vs_actual(y_true, y_pred, title="Actual vs. Predicted", save_to=None):
-    plt.scatter(y_true, y_pred)
-    plt.xlabel('Actual')
-    plt.ylabel('Predicted')
+    plt.scatter(y_pred, y_true)
+    plt.xlabel('Predicted')
+    plt.ylabel('Actual')
+    plt.title(title)
+    if save_to is not None:
+        plt.savefig(save_to)
+    plt.clf()
+
+def plot_residual(y_true, y_pred, title="Residuals", save_to=None):
+    resid = y_true - y_pred
+    plt.scatter(y_pred, resid)
+    plt.xlabel('Predicted')
+    plt.ylabel('Residual')
     plt.title(title)
     if save_to is not None:
         plt.savefig(save_to)
