@@ -15,6 +15,18 @@ def plot_nn_history(history, show=True, save_to=None):
     if show:
         plt.show()
 
+def plot_nn_accuracy(history, show=True, save_to=None):
+    start = 1
+    acc = history.history['accuracy'][start:]
+    plt.plot(acc)
+    plt.title('Model Accuracy')
+    plt.ylabel('accuracy')
+    plt.xlabel('epoch')
+    if save_to is not None:
+        plt.savefig(save_to)
+    if show:
+        plt.show()
+
 def plot_pred_vs_actual(y_true, y_pred, title="Actual vs. Predicted", save_to=None):
     plt.scatter(y_pred, y_true)
     plt.xlabel('Predicted')

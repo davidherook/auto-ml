@@ -21,10 +21,13 @@ python train.py -c config.yaml -d data/sample/regression/boston_housing.csv
 python train.py -c config.yaml -d data/sample/regression/avocado.csv
 
 # Classification Examples
-python train.py -c config.yaml -d data/sample/classification/blobs_0.csv
-python train.py -c config.yaml -d data/sample/classification/blobs_1.csv
-python train.py -c config.yaml -d data/sample/classification/blobs_2.csv
-python train.py -c config.yaml -d data/sample/classification/circles_0.csv
+python train.py -c config.yaml -d data/sample/classification/blobs.csv
+python train.py -c config.yaml -d data/sample/classification/circles.csv
+```
+
+If you do not wish to persist the trained model and the validation results, use the `--no-save` option:
+```
+python train.py -c config.yaml -d data/sample/classification/circles.csv --no-save
 ```
 
 ## Predict 
@@ -39,5 +42,7 @@ python predict.py --model 1614042394 --data data/test_data.csv
 TODO:
 - Preprocessing
 - Class Probabilities
+- Replace validation_split with validation_data
+- Type Hints?
 
 

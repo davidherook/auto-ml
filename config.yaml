@@ -83,21 +83,19 @@ problem_type: classification
 neural_net:
   architecture:
   - activation: relu
+    nodes: 16
+  - activation: relu
     nodes: 4
-  - activation: relu
-    nodes: 2
-  - activation: relu
-    nodes: 2
   - activation: sigmoid
     nodes: 1
 
   optimizer:
     loss: binary_crossentropy
-    learning_rate: 0.01
+    learning_rate: 0.3
     metrics: 
     - accuracy
 
   training:
     epochs: 150
-    batch_size: 128
+    batch_size: 1024
     validation_split: 0.2

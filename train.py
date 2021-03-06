@@ -17,9 +17,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--config', type=str, help='Training configuration')
     parser.add_argument('-d', '--data', type=str, help='Training data')
+    parser.add_argument('-n', '--no-save', action='store_false', help='Whether to save')
     args = vars(parser.parse_args())
     config_path = args['config']
     data = args['data']
+    save = args['no_save']
 
     config = load_yaml(config_path)
     df = pd.read_csv(data)
@@ -29,6 +31,6 @@ if __name__ == '__main__':
     elif config['problem_type'] == 'classification':
         automl = AutoMLClassifier(config=config)
 
-    automl.train(data=df)
-    automl.evaluate()
+    automl.train(data=df, save=save)
+    automl.evaluate(save=save)
     print('*'*40+'\n\n')

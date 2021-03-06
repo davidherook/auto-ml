@@ -14,7 +14,7 @@ from keras.optimizers import Adam
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 
-from auto_ml.plots import plot_pred_vs_actual, plot_residual, plot_nn_history
+from auto_ml.plots import plot_pred_vs_actual, plot_residual, plot_nn_history, plot_nn_accuracy
 from auto_ml.util import generate_hash, load_pickle, save_pickle, save_yaml, load_yaml, save_model_h5, load_model_h5
 
 MODEL_DIR = 'model'
@@ -73,7 +73,7 @@ class AutoML(object):
             else:
                 self.model_params = config[self.active_model]
 
-    def train(self, data):
+    def train(self, data, save=True):
         X, y = data[self.features], data[self.target]
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, y, test_size=0.20, random_state=7)
         print('Training on {}, Testing on {}'.format(self.X_train.shape[0], self.X_test.shape[0]))
@@ -83,7 +83,8 @@ class AutoML(object):
         else: 
             self.train_scikit()
 
-        self.save_model_artifacts(self.model, self.config)
+        if save:
+            self.save_model_artifacts(self.model, self.config)
 
     def train_nn(self):
         self.model = build_model(self.nn_layers, self.nn_optimizer)
@@ -152,13 +153,15 @@ class AutoMLRegressor(AutoML):
 
         if self.active_model == 'neural_net':
             history_path = os.path.join(output_dir, 'history.png')
+            accuracy_path = os.path.join(output_dir, 'accuracy.png')
             plot_nn_history(self.history, show=True, save_to=history_path)
+            plot_nn_accuracy(self.history, show=True, save_to=accuracy_path)
 
         plot_pred_vs_actual(df_test[self.target], df_test[self.target + '_pred'], save_to=scatter_path)
         plot_residual(df_test[self.target], df_test[self.target + '_pred'], save_to=residual_path)
         print('Saved model output')
 
-    def evaluate(self):
+    def evaluate(self, save=True):
         def mean_abs_pct_error(y_test, y_pred):
             return np.mean( np.abs( (y_test - y_pred) / y_test ) ) * 100
 
@@ -189,7 +192,9 @@ class AutoMLRegressor(AutoML):
         X_test_copy = self.X_test.copy()
         X_test_copy[self.target] = self.y_test
         X_test_copy[self.target + '_pred'] = y_pred
-        self.save_model_output(X_test_copy)
+
+        if save:
+            self.save_model_output(X_test_copy)
 
 
 class AutoMLClassifier(AutoML):
@@ -212,7 +217,7 @@ class AutoMLClassifier(AutoML):
         cm.index = ['Actual {}'.format(c) for c in cm.index]
         return cm
 
-    def evaluate(self):
+    def evaluate(self, save=True):
         y_pred = self.predict(self.X_test)
         print(y_pred)
         target_mean, target_std = np.mean(self.y_test), np.std(self.y_test)
@@ -235,7 +240,9 @@ class AutoMLClassifier(AutoML):
         X_test_copy = self.X_test.copy()
         X_test_copy[self.target] = self.y_test
         X_test_copy[self.target + '_pred'] = y_pred
-        self.save_model_output(X_test_copy)
+        
+        if save:
+            self.save_model_output(X_test_copy)
 
     def save_model_output(self, df_test):
         output_dir = os.path.join(OUTPUT_DIR, self.model_hash)
@@ -250,6 +257,8 @@ class AutoMLClassifier(AutoML):
 
         if self.active_model == 'neural_net':
             history_path = os.path.join(output_dir, 'history.png')
+            accuracy_path = os.path.join(output_dir, 'accuracy.png')
             plot_nn_history(self.history, show=True, save_to=history_path)
+            plot_nn_accuracy(self.history, show=True, save_to=accuracy_path)
 
         print('Saved model output')
