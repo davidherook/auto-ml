@@ -7,9 +7,9 @@ def plot_nn_history(history, show=True, save_to=None):
     plt.plot(loss)
     plt.plot(val_loss)
     plt.title('Model Loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'test'], loc='upper left')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
     if save_to is not None:
         plt.savefig(save_to)
     if show:
@@ -18,10 +18,13 @@ def plot_nn_history(history, show=True, save_to=None):
 def plot_nn_accuracy(history, show=True, save_to=None):
     start = 1
     acc = history.history['accuracy'][start:]
+    val_acc = history.history['val_accuracy'][start:]
     plt.plot(acc)
+    plt.plot(val_acc)
     plt.title('Model Accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Accuracy', 'Val Accuracy'], loc='upper left')
     if save_to is not None:
         plt.savefig(save_to)
     if show:

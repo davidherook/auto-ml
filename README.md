@@ -25,7 +25,7 @@ python train.py -c config.yaml -d data/sample/classification/blobs.csv
 python train.py -c config.yaml -d data/sample/classification/circles.csv
 ```
 
-If you do not wish to persist the trained model and the validation results, use the `--no-save` option:
+If you are trying many different times and do not wish to save the model and output after each run, use the `--no-save` option:
 ```
 python train.py -c config.yaml -d data/sample/classification/circles.csv --no-save
 ```
@@ -42,7 +42,7 @@ python predict.py --model 1614042394 --data data/test_data.csv
 TODO:
 - Preprocessing
 - Class Probabilities
-- Replace validation_split with validation_data
-- Type Hints?
+- Evaluate with both validation and test
+- Test with more datasets
 
 
