@@ -31,6 +31,7 @@ if __name__ == '__main__':
     elif config['problem_type'] == 'classification':
         automl = AutoMLClassifier(config=config)
 
-    automl.train(data=df, save=save)
+    # TODO: add cross_val in config
+    automl.train(data=df, save=save, cross_val=True)
     automl.evaluate(save=save)
     print('*'*40+'\n\n')

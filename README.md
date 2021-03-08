@@ -1,19 +1,20 @@
 # Auto-ML
 
-A quick way to train a baseline model. All you need to do is add a dataset to the data folder and choose which features to use in the config file. The model is persisted in the model folder and the training performance is reported in the output folder.
+A quick way to train a baseline model. All you need to do is add a dataset (csv file) to the data folder and edit the config file. A trained model is saved to the model folder to serve predictions later and training performance is saved to the output folder.
 
 ## Getting Started
 
-Clone the repo, install requirements, and activate the virtual environment
+Clone the repo, activate a virtual environment, and install requirements:
 ```
 git clone https://github.com/davidherook/auto-ml
-pip install -r requirements.txt
+python3 -m venv venv
 source venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ## Train a Model
 
-There is a sample config file in config.yaml. You only need to change the features and target and then specify whether it is a regression or classification problem. To choose a model, uncomment one of the model types along with its parameters. Then, pass the config and the training data path as arguments to train a model. A model will be saved to the model folder along with the config it was trained with. Training validation results will be written to the output folder.
+There is a sample config file in config.yaml. Update the features and target for your dataset, specify whether it is a classification or regression problem, and uncomment one of the model types along with its parameters. Pass the config and the training data paths as command line arguments to begin training. A model will be saved to the `model` folder along with the config it was trained with. Training validation results will be written to the `output` folder.
 
 ```
 # Regression Examples
@@ -25,10 +26,14 @@ python train.py -c config.yaml -d data/sample/classification/blobs.csv
 python train.py -c config.yaml -d data/sample/classification/circles.csv
 ```
 
-If you are trying many different times and do not wish to save the model and output after each run, use the `--no-save` option:
+If you do not want to save any artifacts to `model` or `output`, use the `--no-save` option:
 ```
 python train.py -c config.yaml -d data/sample/classification/circles.csv --no-save
 ```
+
+### Cross Validation
+
+To ensure that our model will generalize well to unseen test data, there is also the option to run cross validation. This will train/validate the same way as above except over 4 folds of the data rather than one. A test set is excluded from this process and held out for evaluation the same way as above. The persisted model saved to the `model` folder is the one from the last fold. You will notice an additional plot in the `output` folder called `cross_val.png` which gives our model history for each fold. Each line should show a similar trend to show that we're generalizing well to randomness. The training metrics in the top row should be similar to the validation metrics in the bottom row to make sure we're not overfitting.
 
 ## Predict 
 
@@ -41,8 +46,15 @@ python predict.py --model 1614042394 --data data/test_data.csv
 
 TODO:
 - Preprocessing
+- Feature Engineering
 - Class Probabilities
-- Evaluate with both validation and test
 - Test with more datasets
+- Cross val for scikit
+- Test all cases: 
+1. Scikit, no cross val 
+2. Scikit, cross val 
+3. NN, no cross val 
+4. NN, cross val 
+5. all repeated, with no-save option
 
 

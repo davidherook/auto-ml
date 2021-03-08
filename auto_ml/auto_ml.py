@@ -3,6 +3,7 @@ import json
 import yaml
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import KFold
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
@@ -13,7 +14,7 @@ from keras.optimizers import Adam
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 
-from auto_ml.plots import plot_pred_vs_actual, plot_residual, plot_nn_history, plot_nn_accuracy
+from auto_ml.plots import plot_pred_vs_actual, plot_residual, plot_nn_history, plot_nn_accuracy, plot_nn_histories
 from auto_ml.util import *
 
 MODEL_DIR = 'model'
@@ -73,24 +74,61 @@ class AutoML(object):
                 self.nn_layers = config['neural_net']['architecture']
                 self.nn_optimizer = config['neural_net']['optimizer']
                 self.training = config['neural_net']['training']
+                self.histories = None
             else:
                 self.model_params = config[self.active_model]
 
-    def train(self, data, save=True):
+    def cross_val_train(self, data, k=4):
+        """Returns a list of tensorflow.python.keras.callbacks.History objects"""
+        scores = []
+        histories = []
+
         X, y = data[self.features], data[self.target]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=7)
 
-        splits = train_val_test_split(X, y,
-            self.train_ratio, 
-            self.validation_ratio, 
-            self.test_ratio)
+        # save test set for evaluation later
+        self.X_test, self.y_test = X_test, y_test
 
-        self.X_train, self.X_val, self.X_test, self.y_train, self.y_val, self.y_test = splits
-        print('Training on {}, Validating on {}, Testing on {}'.format(self.X_train.shape[0], self.X_val.shape[0], self.X_test.shape[0]))
+        # Fold the data over the training set
+        # This gives us training and validation set
+        # The self.X_test is saved for evaluation after
+        # Original dataset = 200,000
+        # Train = 160,000
+        # train, val = 120,000, 40,000
+        for train, val in KFold(n_splits=k, random_state=7).split(X_train, y_train):
 
-        if self.active_model == 'neural_net':
-            self.train_nn()
-        else: 
-            self.train_scikit()
+            print('Training on {}, validating on {}...'.format(len(train), len(val)))
+            self.X_train, self.y_train = X_train.iloc[train], y_train.iloc[train]
+            self.X_val, self.y_val = X_train.iloc[val], y_train.iloc[val]
+
+            if self.active_model == 'neural_net':
+                history = self.train_nn()
+                histories.append(history)
+            else: 
+                self.train_scikit()
+
+        return histories
+            
+    def train(self, data, save=True, cross_val=True):
+
+        if cross_val: 
+            self.histories = self.cross_val_train(data, k=4)
+        
+        else:
+            X, y = data[self.features], data[self.target]
+
+            splits = train_val_test_split(X, y,
+                self.train_ratio, 
+                self.validation_ratio, 
+                self.test_ratio)
+
+            self.X_train, self.X_val, self.X_test, self.y_train, self.y_val, self.y_test = splits
+            print('Training on {}\nValidating on {}\nTesting on {}...'.format(self.X_train.shape[0], self.X_val.shape[0], self.X_test.shape[0]))
+
+            if self.active_model == 'neural_net':
+                self.train_nn()
+            else: 
+                self.train_scikit()
 
         if save:
             self.save_model_artifacts(self.model, self.config)
@@ -102,7 +140,8 @@ class AutoML(object):
             epochs=self.training['epochs'],
             batch_size=self.training['batch_size'],
             validation_data=(self.X_val, self.y_val),
-            verbose=True)
+            verbose=False)
+        return self.history
 
     def train_scikit(self):
         if self.active_model == 'random_forest_regression':
@@ -161,8 +200,8 @@ class AutoMLRegressor(AutoML):
             json.dump(self.metrics, f, indent=4)
 
         if self.active_model == 'neural_net':
-            history_path = os.path.join(output_dir, 'history.png')
-            accuracy_path = os.path.join(output_dir, 'accuracy.png')
+            history_path = os.path.join(output_dir, 'model_loss.png')
+            accuracy_path = os.path.join(output_dir, 'model_accuracy.png')
             plot_nn_history(self.history, show=True, save_to=history_path)
 
         plot_pred_vs_actual(df_test[self.target], df_test[self.target + '_pred'], save_to=scatter_path)
@@ -257,9 +296,14 @@ class AutoMLClassifier(AutoML):
             json.dump(self.metrics, f, indent=4)
 
         if self.active_model == 'neural_net':
-            history_path = os.path.join(output_dir, 'history.png')
-            accuracy_path = os.path.join(output_dir, 'accuracy.png')
+            history_path = os.path.join(output_dir, 'model_loss.png')
+            accuracy_path = os.path.join(output_dir, 'model_accuracy.png')
+            cross_val_path = os.path.join(output_dir, 'cross_val.png')
+            # TODO reconcile with plot_nn_histories
+            # right now it will show the last fold
             plot_nn_history(self.history, show=True, save_to=history_path)
             plot_nn_accuracy(self.history, show=True, save_to=accuracy_path)
+            if self.histories is not None:  
+                plot_nn_histories(self.histories, save_to=cross_val_path)
 
         print('Saved model output')

@@ -1,10 +1,10 @@
 ###################################
 # Dataset Configuration
 ###################################
-# features:
-# - feat_0
-# - feat_1
-# target: target
+features:
+- feat_0
+- feat_1
+target: target
 
 
 # features:
@@ -23,21 +23,21 @@
 #   - LSTAT
 # target: mdev
 
-features:
-- '4046'
-- '4225'
-- '4770'
-- Total Volume
-- Total Bags
-- Small Bags
-- Large Bags
-- XLarge Bags
-target: AveragePrice
+# features:
+# - '4046'
+# - '4225'
+# - '4770'
+# - Total Volume
+# - Total Bags
+# - Small Bags
+# - Large Bags
+# - XLarge Bags
+# target: AveragePrice
 
-problem_type: regression
-train_ratio: 0.60
-validation_ratio: 0.20
-test_ratio: 0.20
+problem_type: classification
+train_ratio: 0.70
+validation_ratio: 0.15
+test_ratio: 0.15
 
 ###################################
 # REGRESSION model selection  
@@ -47,9 +47,9 @@ test_ratio: 0.20
 #   fit_intercept: True 
 #   normalize: False
 
-random_forest_regression:
-  n_estimators: 101
-  random_state: 7
+# random_forest_regression:
+#   n_estimators: 101
+#   random_state: 7
 
 # neural_net:
 #   architecture:
@@ -80,25 +80,25 @@ random_forest_regression:
 #   random_state: 7
 
 # random_forest_classifier:
-#   n_estimators: 100
+#   n_estimators: 101
 #   class_weight: balanced
 #   random_state: 7
 
-# neural_net:
-#   architecture:
-#   - activation: relu
-#     nodes: 16
-#   - activation: relu
-#     nodes: 4
-#   - activation: sigmoid
-#     nodes: 1
+neural_net:
+  architecture:
+  - activation: relu
+    nodes: 8
+  - activation: relu
+    nodes: 4
+  - activation: sigmoid
+    nodes: 1
 
-#   optimizer:
-#     loss: binary_crossentropy
-#     learning_rate: 0.3
-#     metrics: 
-#     - accuracy
+  optimizer:
+    loss: binary_crossentropy
+    learning_rate: 0.001
+    metrics: 
+    - accuracy
 
-#   training:
-#     epochs: 150
-#     batch_size: 1024
+  training:
+    epochs: 23
+    batch_size: 1024

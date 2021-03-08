@@ -1,0 +1,24 @@
+features:
+- feat_0
+- feat_1
+target: target
+problem_type: classification
+train_ratio: 0.7
+validation_ratio: 0.15
+test_ratio: 0.15
+neural_net:
+  architecture:
+  - activation: relu
+    nodes: 8
+  - activation: relu
+    nodes: 4
+  - activation: sigmoid
+    nodes: 1
+  optimizer:
+    loss: binary_crossentropy
+    learning_rate: 0.001
+    metrics:
+    - accuracy
+  training:
+    epochs: 150
+    batch_size: 1024

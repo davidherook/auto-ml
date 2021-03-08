@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 def plot_nn_history(history, show=True, save_to=None):
     start = 1
@@ -48,3 +49,37 @@ def plot_residual(y_true, y_pred, title="Residuals", save_to=None):
     if save_to is not None:
         plt.savefig(save_to)
     plt.clf()
+
+def plot_nn_histories(histories, save_to=None):
+    # TODO
+    # Check what metrics are available for regression - can we substitute R2 for acc?
+    metrics=['loss', 'accuracy', 'val_accuracy', 'val_loss']
+
+    avg_loss = np.mean([history.history['loss'][-1] for history in histories])
+    avg_val_loss = np.mean([history.history['val_loss'][-1] for history in histories])
+    avg_acc = np.mean([history.history['accuracy'][-1] for history in histories])
+    avg_val_acc = np.mean([history.history['val_accuracy'][-1] for history in histories])
+
+    coords = {'loss': [0, 0],
+        'accuracy': [0, 1],
+        'val_loss': [1, 0],
+        'val_accuracy': [1, 1]}
+
+    values = {'loss': avg_loss,
+        'accuracy': avg_acc,
+        'val_loss': avg_val_loss,
+        'val_accuracy': avg_val_acc}
+
+    fig, axes = plt.subplots(2, 2, figsize=(12,10))
+    for metric in metrics:
+        ax = axes[coords[metric][0], coords[metric][1]]
+        for history in histories:
+            ax.plot(history.history[metric])
+        ax.set_title(metric + ' (avg={0:.{1}f})'.format(values[metric], 2), size=12)
+        ax.tick_params(which='major', width=0.8, labelsize=8)
+
+    if save_to is not None:
+        fig.savefig(save_to)
+    plt.close()
+
+            
