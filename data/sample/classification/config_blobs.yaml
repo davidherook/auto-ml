@@ -1,0 +1,46 @@
+# ====================================
+# Dataset Configuration
+# ====================================
+
+problem_type: classification
+
+features:
+- feat_0
+- feat_1
+target: target
+
+train_ratio: 0.70
+validation_ratio: 0.15
+test_ratio: 0.15
+
+# ====================================
+# CLASSIFICATION model selection 
+# ====================================
+
+# logistic_regression:
+#   class_weight: None
+#   random_state: 7
+
+random_forest_classifier:
+  n_estimators: 101
+  class_weight: balanced
+  random_state: 7
+
+# neural_net:
+#   architecture:
+#   - activation: relu
+#     nodes: 8
+#   - activation: relu
+#     nodes: 4
+#   - activation: sigmoid
+#     nodes: 1
+
+#   optimizer:
+#     loss: binary_crossentropy
+#     learning_rate: 0.1
+#     metrics: 
+#     - accuracy
+
+#   training:
+#     epochs: 150
+#     batch_size: 256

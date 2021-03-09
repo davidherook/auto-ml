@@ -1,0 +1,52 @@
+# ====================================
+# Dataset Configuration
+# ====================================
+
+problem_type: regression
+
+features:
+- '4046'
+- '4225'
+- '4770'
+- Total Volume
+- Total Bags
+- Small Bags
+- Large Bags
+- XLarge Bags
+target: AveragePrice
+
+
+train_ratio: 0.70
+validation_ratio: 0.15
+test_ratio: 0.15
+
+# ====================================
+# REGRESSION model selection  
+# ====================================
+
+# linear_regression:
+#   fit_intercept: True 
+#   normalize: False
+
+random_forest_regression:
+  n_estimators: 101
+  random_state: 7
+
+# neural_net:
+#   architecture:
+#   - activation: relu
+#     nodes: 16
+#   - activation: relu
+#     nodes: 1
+
+#   optimizer:
+#     loss: mse
+#     learning_rate: 0.001
+#     metrics:
+#     - mse
+#     - mae
+#     - mape
+
+#   training:
+#     epochs: 50
+#     batch_size: 32

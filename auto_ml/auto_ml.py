@@ -97,7 +97,6 @@ class AutoML(object):
         X, y = data[self.features], data[self.target]
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=7)
 
-        # save test set for evaluation later
         self.X_test, self.y_test = X_test, y_test
 
         for train, val in KFold(n_splits=k).split(X_train, y_train):
@@ -109,11 +108,7 @@ class AutoML(object):
             if self.active_model == 'neural_net':
                 history = self.train_nn()
                 validation_score = self.model.evaluate(self.X_val, self.y_val)
-                # TODO update this for classificaiton vs. accuracy
-                # if classification:
-                print('Model Loss, Accuracy: {}\n'.format(validation_score))
-                # if accuracy:
-                # print(...)
+                print('Model Loss, {} : {}\n'.format(self.nn_optimizer['metrics'], validation_score))
                 histories.append(history)
             else: 
                 self.train_scikit()
@@ -126,7 +121,7 @@ class AutoML(object):
     def train(self, data, save=True, cross_val=True):
 
         if cross_val: 
-            print('\nDoing Cross Validation over {} folds...\n'.format(self.K_FOLDS))
+            print('\nRunning Cross Validation over {} folds...\n'.format(self.K_FOLDS))
             self.histories = self.cross_val_train(data, k=self.K_FOLDS)
         
         else:
@@ -220,7 +215,7 @@ class AutoMLRegressor(AutoML):
             cross_val_path = os.path.join(output_dir, 'cross_val.png')
             plot_nn_history(self.history, show=True, save_to=history_path)
             if self.histories is not None:  
-                plot_nn_histories(self.histories, save_to=cross_val_path)
+                plot_nn_histories(self.histories, self.nn_optimizer['metrics'], save_to=cross_val_path)
 
         plot_pred_vs_actual(df_test[self.target], df_test[self.target + '_pred'], save_to=scatter_path)
         plot_residual(df_test[self.target], df_test[self.target + '_pred'], save_to=residual_path)
@@ -317,11 +312,9 @@ class AutoMLClassifier(AutoML):
             history_path = os.path.join(output_dir, 'model_loss.png')
             accuracy_path = os.path.join(output_dir, 'model_accuracy.png')
             cross_val_path = os.path.join(output_dir, 'cross_val.png')
-            # TODO reconcile with plot_nn_histories
-            # right now it will show the last fold
             plot_nn_history(self.history, show=True, save_to=history_path)
             plot_nn_accuracy(self.history, show=True, save_to=accuracy_path)
             if self.histories is not None:  
-                plot_nn_histories(self.histories, save_to=cross_val_path)
+                plot_nn_histories(self.histories, self.nn_optimizer['metrics'], save_to=cross_val_path)
 
         print('Saved model output')

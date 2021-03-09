@@ -1,86 +1,54 @@
-###################################
+# ====================================
 # Dataset Configuration
-###################################
-# features:
-# - feat_0
-# - feat_1
-# target: target
+# ====================================
 
 # features:
-#   - CRIM
-#   - ZN
-#   - INDUS
-#   - CHAS
-#   - NOX
-#   - RM
-#   - AGE
-#   - DIS
-#   - RAD
-#   - TAX
-#   - PTRATIO
-#   - B
-#   - LSTAT
-# target: mdev
-
-# features:
-# - '4046'
-# - '4225'
-# - '4770'
-# - Total Volume
-# - Total Bags
-# - Small Bags
-# - Large Bags
-# - XLarge Bags
-# target: AveragePrice
-
-features:
-- is_fx
-- fw_spread
-- cap 
-- edu 
-- money_moved_usd
-target: revenue
+# - is_fx
+# - fw_spread
+# - cap 
+# - edu 
+# - money_moved_usd
+# target: revenue
 
 problem_type: regression
 train_ratio: 0.70
 validation_ratio: 0.15
 test_ratio: 0.15
 
-###################################
+# ====================================
 # REGRESSION model selection  
-###################################
+# ====================================
 
 # linear_regression:
 #   fit_intercept: True 
 #   normalize: False
 
-random_forest_regression:
-  n_estimators: 101
-  random_state: 7
+# random_forest_regression:
+#   n_estimators: 10
+#   random_state: 7
 
-# neural_net:
-#   architecture:
-#   - activation: relu
-#     nodes: 4
-#   - activation: relu
-#     nodes: 4
-#   - activation: relu
-#     nodes: 1
+neural_net:
+  architecture:
+  - activation: relu
+    nodes: 16
+  - activation: relu
+    nodes: 1
 
-#   optimizer:
-#     loss: mse
-#     learning_rate: 0.001
-#     metrics:
-#     - mse
-#     - mae
+  optimizer:
+    loss: mse
+    learning_rate: 0.001
+    metrics:
+    - mse
+    - mae
+    - mape
 
-#   training:
-#     epochs: 50
-#     batch_size: 128
+  training:
+    epochs: 50
+    batch_size: 32
 
-###################################
+# ====================================
 # CLASSIFICATION model selection 
-###################################
+# ====================================
 
 # logistic_regression:
 #   class_weight: None
@@ -102,10 +70,10 @@ random_forest_regression:
 
 #   optimizer:
 #     loss: binary_crossentropy
-#     learning_rate: 0.01
+#     learning_rate: 0.1
 #     metrics: 
 #     - accuracy
 
 #   training:
-#     epochs: 20
-#     batch_size: 1024
+#     epochs: 25
+#     batch_size: 256

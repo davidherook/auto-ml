@@ -1,9 +1,9 @@
 ########################################################################################
 # Example, regression:
-# python train.py -c config.yaml -d data/boston_housing.csv
+# python train.py -c data/sample/regression/config_avocado.yaml -d data/sample/regression/avocado.csv
 #
 # Example, classification:
-# python train.py -c config.yaml -d data/boston_housing_clf.csv
+# python train.py -c data/sample/classification/config_circles.yaml -d data/sample/classification/circles.csv
 ########################################################################################
 
 import argparse
