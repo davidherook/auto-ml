@@ -15,13 +15,15 @@ if __name__ == '__main__':
 
     print('\n\n'+'*'*40)
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--config', type=str, help='Training configuration')
-    parser.add_argument('-d', '--data', type=str, help='Training data')
-    parser.add_argument('-n', '--no-save', action='store_false', help='Whether to save')
+    parser.add_argument('-c', '--config', type=str, help='Training configuration path')
+    parser.add_argument('-d', '--data', type=str, help='Training data path')
+    parser.add_argument('-n', '--no-save', action='store_false', help='Whether to save to output folder')
+    parser.add_argument('-v', '--cross-val', action='store_true', help='Whether to do cross validation')
     args = vars(parser.parse_args())
     config_path = args['config']
     data = args['data']
     save = args['no_save']
+    cross_val = args['cross_val']
 
     config = load_yaml(config_path)
     df = pd.read_csv(data)
@@ -31,7 +33,6 @@ if __name__ == '__main__':
     elif config['problem_type'] == 'classification':
         automl = AutoMLClassifier(config=config)
 
-    # TODO: add cross_val in config
-    automl.train(data=df, save=save, cross_val=True)
+    automl.train(data=df, save=save, cross_val=cross_val)
     automl.evaluate(save=save)
     print('*'*40+'\n\n')

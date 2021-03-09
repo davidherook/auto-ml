@@ -1,11 +1,10 @@
 ###################################
 # Dataset Configuration
 ###################################
-features:
-- feat_0
-- feat_1
-target: target
-
+# features:
+# - feat_0
+# - feat_1
+# target: target
 
 # features:
 #   - CRIM
@@ -34,7 +33,15 @@ target: target
 # - XLarge Bags
 # target: AveragePrice
 
-problem_type: classification
+features:
+- is_fx
+- fw_spread
+- cap 
+- edu 
+- money_moved_usd
+target: revenue
+
+problem_type: regression
 train_ratio: 0.70
 validation_ratio: 0.15
 test_ratio: 0.15
@@ -51,25 +58,25 @@ test_ratio: 0.15
 #   n_estimators: 101
 #   random_state: 7
 
-# neural_net:
-#   architecture:
-#   - activation: relu
-#     nodes: 16
-#   - activation: relu
-#     nodes: 4
-#   - activation: relu
-#     nodes: 1
+neural_net:
+  architecture:
+  - activation: relu
+    nodes: 4
+  # - activation: relu
+  #   nodes: 4
+  - activation: relu
+    nodes: 1
 
-#   optimizer:
-#     loss: mse
-#     learning_rate: 0.01
-#     metrics:
-#     - mse
-#     - mae
+  optimizer:
+    loss: mse
+    learning_rate: 0.001
+    metrics:
+    - mse
+    - mae
 
-#   training:
-#     epochs: 150
-#     batch_size: 1024
+  training:
+    epochs: 250
+    batch_size: 2048
 
 ###################################
 # CLASSIFICATION model selection 
@@ -80,25 +87,25 @@ test_ratio: 0.15
 #   random_state: 7
 
 # random_forest_classifier:
-#   n_estimators: 101
+#   n_estimators: 10
 #   class_weight: balanced
 #   random_state: 7
 
-neural_net:
-  architecture:
-  - activation: relu
-    nodes: 8
-  - activation: relu
-    nodes: 4
-  - activation: sigmoid
-    nodes: 1
+# neural_net:
+#   architecture:
+#   - activation: relu
+#     nodes: 8
+#   - activation: relu
+#     nodes: 4
+#   - activation: sigmoid
+#     nodes: 1
 
-  optimizer:
-    loss: binary_crossentropy
-    learning_rate: 0.001
-    metrics: 
-    - accuracy
+#   optimizer:
+#     loss: binary_crossentropy
+#     learning_rate: 0.01
+#     metrics: 
+#     - accuracy
 
-  training:
-    epochs: 23
-    batch_size: 1024
+#   training:
+#     epochs: 20
+#     batch_size: 1024
