@@ -35,7 +35,10 @@ To ensure that our model will generalize well to unseen test data, cross validat
 
 The model saved to the `model` folder is the one from the last fold. Cross validation metrics will be printed to the screen (accuracy for classification and R2 for regression) but if training a neural net, you will notice an additional plot in the `output` folder called `cross_val.png` which gives the model history and accuracy over each fold. Each line should show a similar trend indicating that it's **generalizing well to the random splits**. The training metrics in the top row should be similar to the validation metrics in the bottom row to make sure **the model is not overfitting**.
 
-![alt text](https://github.com/davidherook/auto-ml/blob/master/sample/cross-val.png?raw=true)
+![alt text](https://github.com/davidherook/auto-ml/blob/master/data/sample/cross-val.png?raw=true)
+
+
+![Screenshot](data/sample/cross-val.png)
 
 If not using cross validation, you can set the train/validation/test splits in config. By default, cross validation holds out 20% as test data and then splits over 4 folds. Therefore, if you have a dataset of 200k rows, the cross validation sets will be:
 
