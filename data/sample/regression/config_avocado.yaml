@@ -35,13 +35,17 @@ random_forest_regression:
 # neural_net:
 #   architecture:
 #   - activation: relu
-#     nodes: 16
+#     nodes: 64
+#   - activation: relu
+#     nodes: 32
+#   - activation: relu
+#     nodes: 32
 #   - activation: relu
 #     nodes: 1
 
 #   optimizer:
 #     loss: mse
-#     learning_rate: 0.001
+#     learning_rate: 0.01
 #     metrics:
 #     - mse
 #     - mae

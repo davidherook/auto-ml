@@ -2,15 +2,14 @@
 # Dataset Configuration
 # ====================================
 
-# features:
-# - is_fx
-# - fw_spread
-# - cap 
-# - edu 
-# - money_moved_usd
-# target: revenue
+features:
+- feature_0
+- feature_1
+- etc... 
+target: target
 
 problem_type: regression
+
 train_ratio: 0.70
 validation_ratio: 0.15
 test_ratio: 0.15
@@ -24,13 +23,17 @@ test_ratio: 0.15
 #   normalize: False
 
 # random_forest_regression:
-#   n_estimators: 10
+#   n_estimators: 101
 #   random_state: 7
 
 neural_net:
   architecture:
   - activation: relu
     nodes: 16
+  - activation: relu
+    nodes: 16
+  - activation: relu
+    nodes: 8
   - activation: relu
     nodes: 1
 
@@ -43,7 +46,7 @@ neural_net:
     - mape
 
   training:
-    epochs: 50
+    epochs: 200
     batch_size: 32
 
 # ====================================
@@ -55,16 +58,18 @@ neural_net:
 #   random_state: 7
 
 # random_forest_classifier:
-#   n_estimators: 10
+#   n_estimators: 101
 #   class_weight: balanced
 #   random_state: 7
 
 # neural_net:
 #   architecture:
 #   - activation: relu
-#     nodes: 8
+#     nodes: 32
 #   - activation: relu
-#     nodes: 4
+#     nodes: 32
+#   - activation: relu
+#     nodes: 8
 #   - activation: sigmoid
 #     nodes: 1
 
@@ -75,5 +80,5 @@ neural_net:
 #     - accuracy
 
 #   training:
-#     epochs: 25
+#     epochs: 150
 #     batch_size: 256

@@ -37,6 +37,6 @@ if __name__ == '__main__':
         automl = AutoMLClassifier(model=model)
 
     X_test[automl.target + '_pred'] = automl.predict(X_test)
-    X_test.to_csv(write_to)
+    X_test.to_csv(write_to, index=False)
     print(f'Predictions written to {write_to}')
     print('*'*40+'\n\n')
