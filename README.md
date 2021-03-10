@@ -7,6 +7,7 @@ A quick way to train a baseline model. All you need to do is add your data and e
 Clone the repo, activate a virtual environment, and install requirements:
 ```
 git clone https://github.com/davidherook/auto-ml
+cd auto-ml
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
